@@ -1,0 +1,83 @@
+
+<div class="modal fade" tabindex="-1" role="dialog" id="openModal">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title">Open a flow</h4>
+      </div>
+      <div class="modal-body">
+        <div class="input-group input-group-sm">
+          <span class="input-group-addon glyphicon glyphicon-search" style="top: 0"></span>
+          <input type="text" class="form-control" placeholder="Search" [(ngModel)]="flowFilter.name">
+        </div>
+        <div class="list-group" style="max-height: 300px; overflow-y: scroll;margin-top: 10px;">
+          <button type="button" 
+            class="list-group-item" 
+            [ngClass]="{ 'active': flow.selected }" 
+            *ngFor="let flow of allFlows | filterBy: flowFilter" 
+            (click)="selectFlow(flow)">
+              {{flow.name}}
+            </button>
+        </div>
+        <div class="alert alert-info" role="alert">
+          Selected Flow: {{flowToOpen ? flowToOpen.name : 'None'}}
+        </div>
+        <div class="alert alert-warning" role="alert">
+          Save the current flow before continuing or all changes will be lost !
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal" (click)="closeModal()">Close</button>
+        <button type="button" class="btn btn-primary" data-dismiss="modal" (click)="openFlow()" [disabled]="!flowToOpen">Open flow</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<nav class="navbar navbar-default" style="margin-bottom: 0; padding-right: 15px">
+  <div class="container-fluid">
+
+    <div class="navbar-header">
+      <a class="navbar-brand" href="#">{{flow.currentFlowName == '' ? 'New Flow' : flow.currentFlowName}}</a>
+    </div>
+
+    <div class="nav navbar-nav navbar-right">
+      <div class="btn-group" role="group">
+        <button type="button" class="btn btn-default navbar-btn" [ngClass]="{'active': newPopupShown}" (click)="newFlow()">New</button>
+        <div *ngIf="newPopupShown" class="popover bottom" style="display: block; top: 45px; left: -45px"> 
+          <div class="arrow"></div> 
+          <h3 class="popover-title">Save changes ?</h3> 
+          <div class="popover-content"> 
+            <div class="btn-group container-fluid" role="group">
+              <button type="button" class="btn btn-success navbar-btn" (click)="saveProgress()">Yes</button>
+              <button type="button" class="btn btn-danger navbar-btn" (click)="createNewFlow()">No</button>
+            </div>
+          </div> 
+        </div>
+        <button type="button" class="btn btn-default navbar-btn" data-toggle="modal" data-target="#openModal" (click)="showOpenModal()">Open</button>
+        <button type="button" class="btn btn-default navbar-btn" [ngClass]="{'active': savePopupShown}" (click)="toggleSavePopup()">
+          Save
+        </button>
+        <div *ngIf="savePopupShown" class="popover bottom" style="display: block; top: 45px; left: 5px; width: 300px"> 
+          <div class="arrow"></div> 
+          <h3 class="popover-title">Save flow</h3> 
+          <div class="popover-content"> 
+            <div class="input-group">
+              <input type="text" class="form-control" placeholder="Flow name" [(ngModel)]="flow.currentFlowName">
+              <span class="input-group-btn">
+                <button class="btn btn-default" type="button" (click)="saveFlow()">
+                  <span class="glyphicon glyphicon-floppy-disk" aria-hidden="true" style="margin-right: 5px"></span>Save
+                </button>
+              </span>
+            </div>
+          </div> 
+        </div>
+      </div>
+      <div class="btn-group" role="group">
+        <button type="button" class="btn btn-success navbar-btn" (click)="runFlow()">Play</button>
+        <button type="button" class="btn btn-danger navbar-btn">Stop</button>
+      </div>
+    </div>  
+  </div>
+</nav>

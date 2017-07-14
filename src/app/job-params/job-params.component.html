@@ -1,0 +1,37 @@
+<h1>{{!flow.selectedJob ? '' : flow.selectedJob.name}}</h1>
+<div *ngIf="flow.selectedJob">
+  <div *ngFor="let param of flow.selectedJob.params">
+    <div [ngSwitch]="param.type">
+      <div *ngSwitchCase="'StringParameterDefinition'">
+        <label [for]="param.name">{{param.name}}</label>
+        <div class="input-group">
+          <input [id]="param.name" type="text" class="form-control" [value]="param.defaultParameterValue.value" [(ngModel)]="param.value">
+        </div>
+      </div>
+      <div *ngSwitchCase="'TextParameterDefinition'">
+        <label [for]="param.name">{{param.name}}</label>
+        <div class="input-group">
+          <textarea [id]="param.name" class="form-control" [value]="param.defaultParameterValue.value" [(ngModel)]="param.value"></textarea>
+        </div>        
+      </div>
+      <div *ngSwitchCase="'PasswordParameterDefinition'">
+        <label [for]="param.name">{{param.name}}</label>
+        <div class="input-group">
+          <input [id]="param.name" type="password" class="form-control" [value]="param.defaultParameterValue.value" [(ngModel)]="param.value">
+        </div>
+      </div>
+      <div *ngSwitchCase="'BooleanParameterDefinition'">
+        <label [for]="param.name">{{param.name}}</label>
+        <input [id]="param.name" type="checkbox" [value]="param.defaultParameterValue.value" [(ngModel)]="param.value">
+      </div>
+      <div *ngSwitchCase="'ChoiceParameterDefinition'">
+        <label [for]="param.name">{{param.name}}</label>
+        <select [id]="param.name" [value]="param.defaultParameterValue.value" [(ngModel)]="param.value">
+          <option *ngFor="let choice of param.choices" [value]="choice">{{choice}}</option>
+        </select>
+      </div>
+      
+      <h6 *ngSwitchDefault>{{ param | json }}</h6>
+    </div>
+  </div>
+</div>

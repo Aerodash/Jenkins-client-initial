@@ -1,0 +1,26 @@
+<app-topbar [flow]="flow"></app-topbar>
+<div class="container-fluid" style="width: 100%; padding: 0;">
+  <div class="col-md-9" style="position: absolute; left: 0; bottom: 0; top: 53px; padding: 0">
+    
+    <div style="position: absolute; width: 100%; height: 70%; border-bottom: 1px solid grey; overflow: scroll">
+      <div class="zoom-command">
+        <div class="btn-group-vertical" role="group">
+          <button type="button" class="btn btn-default" aria-label="Left Align">
+            <span class="glyphicon glyphicon-zoom-in" aria-hidden="true"></span>
+          </button>
+          <button type="button" class="btn btn-default" aria-label="Left Align">
+            <span class="glyphicon glyphicon-zoom-out" aria-hidden="true"></span>
+          </button>
+        </div>
+      </div>
+      <app-flow #flow></app-flow>
+    </div>
+    
+    <div style="position: absolute; bottom: 0; width: 100%; height: 30%">
+      <span>Flow Params</span>
+    </div>
+  </div>
+  <div class="col-md-3" style="position: absolute; right: 0; bottom: 0; top: 53px; border-left: 1px solid grey; overflow-y: scroll; overflow-x: hidden">
+    <app-job-params [flow]="flow"></app-job-params>
+  </div>
+</div>

@@ -1,0 +1,81 @@
+
+<div class="modal fade" tabindex="-1" role="dialog" id="addModal">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title">Add a job</h4>
+      </div>
+      <div class="modal-body">
+        <div class="input-group input-group-sm">
+          <span class="input-group-addon glyphicon glyphicon-search" style="top: 0"></span>
+          <input type="text" class="form-control" placeholder="Search" [(ngModel)]="jobFilter.name">
+        </div>
+        <div class="list-group" style="max-height: 300px; overflow-y: scroll;margin-top: 10px;">
+          <button type="button" 
+            class="list-group-item" 
+            [ngClass]="{ 'active': job.selected }" 
+            *ngFor="let job of allJobs | filterBy: jobFilter" 
+            (click)="selectJob(job)">
+              {{job.name}}
+            </button>
+        </div>
+        <div class="alert alert-info" role="alert">
+          Selected Job: {{jobToAdd ? jobToAdd.name : 'None'}}
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal" (click)="closeModal()">Close</button>
+        <button type="button" class="btn btn-primary" data-dismiss="modal" (click)="addJob()" [disabled]="!jobToAdd">Add job</button>
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+<div style="padding: 30px">
+  <table border="0">
+    <tr style="transform: translateY(-20px);">
+      <td></td>
+      <td class="node-wrapper" align="center" *ngFor="let job of jobs; let i = index;">
+        <div>
+          <div>
+            <div class="node-title">Add a job</div>
+          </div>
+          <button type="button" data-toggle="modal" data-target="#addModal" class="node-add node-add-button" (click)="showModal('P', i)">
+            <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+          </button>
+        </div>
+      </td>
+    </tr>
+    <tr *ngFor="let row of tableJobs; let i = index">
+      <td class="node-wrapper no-border" align="center" *ngIf="i == 0">
+        <div>
+          <div>
+            <div class="node-title">Start</div>
+          </div>
+          <div class="node node-start"></div>
+        </div>
+      </td>
+      <td align="center" *ngFor="let job of row; let j = index" class="node-wrapper" [ngClass]="{'level-2-node': i > 0, 'no-border': j == 0 && i > 0}">
+        <div *ngIf="job && job != '+'">
+          <div>
+            <div class="node-title node-deletable"><span (click)="deleteJob(job, i, j)">x</span>{{job.name}}</div>
+          </div>
+          <div class="node" 
+            (click)="showJobParams(job, i, j)" 
+            [ngClass]="{'node-selected': job.selected, 'node-success': job.status === 'SUCCESS', 'node-error': job.status !== 'SUCCESS' && job.status !== 'PROGRESS' && job.status, 'node-progress': job.status === 'PROGRESS'}"></div>
+        </div>
+      </td>
+      <td class="node-wrapper no-border" align="center" *ngIf="i == 0">
+        <div>
+          <div>
+            <div class="node-title">Add a job</div>
+          </div>
+          <button type="button" data-toggle="modal" data-target="#addModal" class="node-add node-add-button" (click)="showModal('N')">
+            <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+          </button>
+        </div>
+      </td>
+    </tr>
+  </table>
+</div>
